@@ -13,6 +13,8 @@ import plotly.graph_objects as go
 
 # References:
 # 1 - https://realpython.com/pandas-python-explore-dataset/
+# https://towardsdatascience.com/data-grouping-in-python-d64f1203f8d3
+# http://www.sthda.com/english/articles/32-r-graphics-essentials/132-plot-grouped-data-box-plot-bar-plot-and-more/
 
 
 def create_histogram(array_input, file_name: str) -> bool:
@@ -27,6 +29,17 @@ def create_histogram(array_input, file_name: str) -> bool:
         print(ex)
         return False
     return True
+
+
+def crete_scatterplots(array_input_A, array_input_B, array_input_A_name, array_input_B_name):
+    # https://pythonspot.com/matplotlib-scatterplot/
+
+    # Plot
+    plt.scatter(array_input_A, array_input_B, alpha=0.5)
+    plt.title('Scatter plot: ' + array_input_A_name + "-" + array_input_B_name)
+    plt.xlabel(array_input_A_name)
+    plt.ylabel(array_input_B_name)
+    plt.show()
 
 
 def create_pie(array_input, file_name: str) -> bool:
@@ -114,7 +127,9 @@ class SoftwareQualityEvaluationExam:
 
         # self.show_histograms()
 
-        self.show_pie_char()
+        # self.show_pie_char()
+
+        self.show_scatter_plots()
 
         print("a")
 
@@ -131,6 +146,37 @@ class SoftwareQualityEvaluationExam:
         create_pie(self._lcom, "lcom")
         create_pie(self._loc, "loc")
         create_pie(self._bug, "bug")
+
+    def show_scatter_plots(self):
+        # Bug
+        crete_scatterplots(self._bug, self._wcm, "bug", "wcm")
+        crete_scatterplots(self._bug, self._cbo, "bug", "cbo")
+        crete_scatterplots(self._bug, self._lcom, "bug", "lcom")
+        crete_scatterplots(self._bug, self._loc, "bug", "loc")
+
+        # wcm
+        crete_scatterplots(self._wcm, self._bug, "wcm", "bug")
+        crete_scatterplots(self._wcm, self._cbo, "wcm", "cbo")
+        crete_scatterplots(self._wcm, self._lcom, "wcm", "lcom")
+        crete_scatterplots(self._wcm, self._loc, "wcm", "loc")
+
+        # cbo
+        crete_scatterplots(self._cbo, self._bug, "cbo", "bug")
+        crete_scatterplots(self._cbo, self._wcm, "cbo", "wcm")
+        crete_scatterplots(self._cbo, self._lcom, "cbo", "lcom")
+        crete_scatterplots(self._cbo, self._loc, "cbo", "loc")
+
+        # lcom
+        crete_scatterplots(self._lcom, self._bug, "lcom", "bug")
+        crete_scatterplots(self._lcom, self._wcm, "lcom", "wcm")
+        crete_scatterplots(self._lcom, self._cbo, "lcom", "cbo")
+        crete_scatterplots(self._lcom, self._loc, "lcom", "loc")
+
+        # _loc
+        crete_scatterplots(self._loc, self._bug, "loc", "bug")
+        crete_scatterplots(self._loc, self._wcm, "loc", "wcm")
+        crete_scatterplots(self._loc, self._cbo, "loc", "cbo")
+        crete_scatterplots(self._loc, self._lcom, "loc", "lcom")
 
     def __get_covariance_matrix(self):
         # https://datatofish.com/covariance-matrix-python/
