@@ -173,6 +173,16 @@ class SoftwareQualityEvaluationExam:
 
     def __init__(self, dataset: DataFrame):
         self._dataset: DataFrame = dataset
+
+        features_list = ['wmc', 'cbo', 'lcom', 'loc', 'bug']
+        drop_list = []
+        for current_features in dataset.values:
+            if not current_features in features_list:
+                drop_list.append(current_features)
+
+        dataset = dataset.drop(columns=drop_list)
+        print(dataset.shape)
+
         # Dal dataset si prendono solo valori:
         # togliere le prime 3 colonne (name,version,name) + la prima riga (intersazione)
         # nota - > la prima riga di instestazione è già rimossa da panda ..
