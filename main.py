@@ -10,11 +10,95 @@ import seaborn as sn
 from pandas import DataFrame
 import plotly.graph_objects as go
 
-
 # References:
 # 1 - https://realpython.com/pandas-python-explore-dataset/
 # https://towardsdatascience.com/data-grouping-in-python-d64f1203f8d3
 # http://www.sthda.com/english/articles/32-r-graphics-essentials/132-plot-grouped-data-box-plot-bar-plot-and-more/
+# https://towardsdatascience.com/chi-square-test-for-independence-in-python-with-examples-from-the-ibm-hr-analytics-dataset-97b9ec9bb80a
+
+
+import pathlib
+
+import os
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# References:
+# 1 - https://realpython.com/pandas-python-explore-dataset/
+from sklearn.decomposition import PCA
+
+
+def load_nba():
+    nba = pd.read_csv(get_dataset_path())
+    c = []
+    for n in nba.columns:
+        if n == "name" or n == "version" or n == "name.1":
+            continue
+        c.append(n)
+    return nba[c]
+
+
+def do_pca(df, n=2, plot_=True):
+    pca = PCA(n)  # project from 64 to 2 dimensions
+    projected = pca.fit_transform(df)
+    print(df.shape)
+    print(projected.shape)
+    print(pca.explained_variance_ratio_)
+    if plot_:
+        plt.scatter(projected[:, 0], projected[:, 1],
+                    c=df.bug, edgecolor='none', alpha=0.5,
+                    cmap=plt.cm.get_cmap('Spectral', 21))
+        plt.xlabel('component 1')
+        plt.ylabel('component 2')
+        plt.colorbar()
+        plt.show()
+    print(abs(pca.components_))
+
+
+def calculate_correlations(df, top=4):
+    """
+    from https://stackoverflow.com/questions/17778394/list-highest-correlation-pairs-from-a-large-correlation-matrix-in-pandas
+
+    :param df:
+    :return:
+    """
+    print("Data Frame")
+    print(df)
+    print()
+
+    print("Correlation Matrix")
+    print(df.corr())
+    print()
+
+    def get_redundant_pairs(df):
+        """Get diagonal and lower triangular pairs of correlation matrix"""
+        pairs_to_drop = set()
+        cols = df.columns
+        for i in range(0, df.shape[1]):
+            for j in range(0, i + 1):
+                pairs_to_drop.add((cols[i], cols[j]))
+        return pairs_to_drop
+
+    def get_top_abs_correlations(df, n=5):
+        au_corr = df.corr().abs().unstack()
+        labels_to_drop = get_redundant_pairs(df)
+        au_corr = au_corr.drop(labels=labels_to_drop).sort_values(ascending=False)
+        return au_corr[0:n]
+
+    def get_top_bug_correleations(df, n=top):
+        return df.corr().bug.abs().drop(
+            labels=["bug"]
+        ).sort_values(ascending=False)[:n]
+
+    print("Top Absolute Correlations")
+    print(get_top_abs_correlations(df, 5))
+    print()
+
+    print("bug-Correlation Vector")
+    bc = get_top_bug_correleations(df, top)
+    print(bc)
+    print()
+    return bc
 
 
 def create_histogram(array_input, file_name: str) -> bool:
@@ -129,7 +213,7 @@ class SoftwareQualityEvaluationExam:
 
         # self.show_pie_char()
 
-        self.show_scatter_plots()
+        # self.show_scatter_plots()
 
         print("a")
 
@@ -221,6 +305,14 @@ def get_dataset_path():
 if __name__ == '__main__':
 
     try:
+        my_frame = load_nba()
+        # pca is useless, we want maximum correlation with a column!!!
+        # do_pca(df, 4, False)
+        bug_correlations = calculate_correlations(my_frame)
+
+        print(bug_correlations)
+        print()
+
         dataset_path = get_dataset_path()
         nba = pd.read_csv(dataset_path)
         exam = SoftwareQualityEvaluationExam(nba)
