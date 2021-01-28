@@ -1,0 +1,41 @@
+Implementing Linear Regression
+
+from sklearn.linear_model import LinearRegression
+x = np.array(data['bug']).reshape((-1, 1))
+y = np.array(data['rfc'])
+model = LinearRegression()
+model.fit(x, y)
+r_sq = model.score(x, y)
+
+print('coefficient of determination:', r_sq)
+print('intercept:', model.intercept_)
+print('slope:', model.coef_[0])
+
+a = model.coef_[0] # int(r_sq * 100)
+print('a nella retta:', slope)
+
+line_start_x = data['bug'].min()
+line_end_x = data['bug'].max()
+
+line_start_y = a * line_start_x + model.intercept_;
+line_end_y = a * line_end_x + model.intercept_;
+
+print('a', a)
+print('line_end_x', line_end_x)
+print('model.intercept_', model.intercept_)
+
+line_end_y = a * line_end_x + model.intercept_;
+print('RISULTATO', line_end_y)
+
+line_start = [line_start_x, line_start_y]
+line_end = [line_end_x,line_end_y]
+
+print('lineStart:', lineStart)
+print('lineEnd:', lineEnd)
+
+plt.scatter(x, y)
+plt.plot(line_start, line_end, 'k-', color = 'r')
+plt.xlim([0,data['bug'].max()])
+plt.ylim([0,data['rfc'].max()])
+
+plt.show()
