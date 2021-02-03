@@ -1,0 +1,24 @@
+1) the purpose of this project is to analyze a dataset and find out if there are any correlations between bugs in the software and the metrics used to measure the software itself 
+
+2) the first step is to understand the data. The dataset is composed of 24 columns that indicate the 24 characteristics of a single module and 745 rows, 
+For the project we focus on the bug entry 
+
+3) To choose the best features we use the correlation matrix. The values of the matrix indicate when 2 features are related to each other. The values can range from -1 to 1. 1 indicates maximum correlation while 0 indicates no correlation. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+1)lo scopo di questo progetto è analizzare un dataset e scoprire se ci sono delle correlazioni tra bug nel software e le metriche usate per misurare il software stessolo scopo di questo progetto è analizzare un dataset e scoprire se ci sono delle correlazioni tra bug nel software e le metriche usate per misurare il software stesso
+
+2) la prima operazione è capire i dati. Il dataset è composto da 24 colonne che ci indicano le 24 caratteristiche di un singolo modulo e da 745 righe. Per il progetto ci concentriamo sulla voce bug
+
+3) Per scegliere le features migliori usiamo la matrice di correlazione. I valori della matrice ci indicano quando 2 features sono correlate tra loro. Il valori possono andare da -1 ad 1. 1 indica massima correlazione mentre lo 0 indica nessuna correlazione.
